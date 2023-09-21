@@ -1,12 +1,10 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 
 function SignIn() {
     return (
         <main className="main bg-dark">
             <section className="sign-in-content">
-                <FontAwesomeIcon icon={faUserCircle} />
+                <i className="fa fa-user-circle sign-in-icon"></i>
                 <h1>Sign In</h1>
                 <form>
                     <div className="input-wrapper">
