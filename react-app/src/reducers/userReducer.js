@@ -15,6 +15,11 @@ const userReducer = (state = initialState, action) => {
                 lastName: action.payload.lastName,
                 token: action.payload.token,
             };
+        case 'UPDATE_USER':
+            return {
+                ...state,
+                userName: action.payload.userName,
+            };
         default:
             return state;
     }
