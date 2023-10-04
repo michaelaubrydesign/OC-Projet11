@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 function SignIn() {
@@ -7,6 +8,7 @@ function SignIn() {
     const user = useSelector((state) => state.user);
     console.log(user);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleSignIn = async (e) => {
         e.preventDefault();
@@ -64,6 +66,8 @@ function SignIn() {
                     token: token,
                 },
             });
+
+            navigate('/dashboard');
         } catch (error) {
             // Gérer les erreurs ici
         }
