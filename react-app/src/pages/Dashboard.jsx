@@ -1,42 +1,48 @@
 import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Account from '../components/Account';
 
 function Dashboard() {
+    const dispatch = useDispatch();
     // État local pour gérer l'affichage du formulaire d'édition
     const [isEditing, setIsEditing] = useState(false);
 
+    const user = useSelector((state) => state.user);
+
     // Données utilisateur
     const [userData, setUserData] = useState({
-        userName: 'Iron',
-        firstName: 'Tony',
-        lastName: 'Stark',
+        userName: user.userName,
+        firstName: user.firstName,
+        lastName: user.lastName,
     });
 
-    // Fonction pour gérer le clic sur le bouton "Edit Name"
+    console.log(user);
+
     const handleEditClick = () => {
+        setUserData({
+            userName: user.userName,
+            firstName: user.firstName,
+            lastName: user.lastName,
+        });
         setIsEditing(true);
     };
 
-    // Fonction pour gérer le clic sur le bouton "Save"
     const handleSaveClick = () => {
-        // Logique de sauvegarde des données du formulaire
-        // Mettez à jour l'état local userData avec les nouvelles valeurs
-
         // Mise à jour des données du formulaire
         const updatedUserData = {
-            userName: document.getElementById('edit-username').value,
+            ...userData,
+            userName: document.getElementById('username').value,
         };
 
-        setUserData(updatedUserData);
+        dispatch({
+            type: 'UPDATE_USER',
+            payload: updatedUserData,
+        });
 
-        // Masquez le formulaire d'édition
         setIsEditing(false);
     };
 
-    // Fonction pour gérer le clic sur le bouton "Cancel"
     const handleCancelClick = () => {
-        // Réinitialisez les champs du formulaire avec les valeurs actuelles
-        // et masquez le formulaire d'édition
         setIsEditing(false);
     };
 
@@ -63,7 +69,13 @@ function Dashboard() {
                             <input
                                 type="text"
                                 id="username"
-                                defaultValue={userData.userName}
+                                value={userData.userName}
+                                onChange={(e) =>
+                                    setUserData({
+                                        ...userData,
+                                        userName: e.target.value,
+                                    })
+                                }
                             />
                         </div>
                         <div className="input-wrapper">
@@ -71,7 +83,7 @@ function Dashboard() {
                             <input
                                 type="text"
                                 id="firstname"
-                                defaultValue={userData.firstName}
+                                value={userData.firstName}
                                 disabled
                             />
                         </div>
@@ -80,7 +92,7 @@ function Dashboard() {
                             <input
                                 type="text"
                                 id="lastname"
-                                defaultValue={userData.lastName}
+                                value={userData.lastName}
                                 disabled
                             />
                         </div>
