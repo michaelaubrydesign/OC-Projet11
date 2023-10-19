@@ -3,17 +3,23 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 function SignIn() {
+    // Hook useState pour gérer l'état des champs de formulaire
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    // Hook useSelector pour extraire l'état utilisateur de Redux
     const user = useSelector((state) => state.user);
     console.log(user);
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    // Fonction de gestion de la soumission du formulaire
     const handleSignIn = async (e) => {
         e.preventDefault();
 
         try {
+            // Appel API pour l'authentification de l'utilisateur
             const response = await fetch(
                 'http://localhost:3001/api/v1/user/login',
                 {
@@ -28,17 +34,16 @@ function SignIn() {
                 }
             );
 
+            // Vérifie si la requête est réussie
             if (!response.ok) {
                 throw new Error('Authentication failed');
             }
 
+            // Extrais le token du corps de la réponse
             const data = await response.json();
-
             const token = data.body.token;
 
-            // Autre appel api
-
-            // Effectuer l'appel API pour obtenir les données du profil de l'utilisateur
+            // Appel API pour obtenir les données du profil de l'utilisateur
             const profileResponse = await fetch(
                 'http://localhost:3001/api/v1/user/profile',
                 {
@@ -54,9 +59,11 @@ function SignIn() {
                 throw new Error('Failed to fetch user profile data');
             }
 
+            // Extrais les données du profil de la réponse
             const profileData = await profileResponse.json();
             console.log(profileData);
 
+            // Dispatch de l'action 'SET_USER' pour mettre à jour l'état de l'utilisateur dans Redux
             dispatch({
                 type: 'SET_USER',
                 payload: {

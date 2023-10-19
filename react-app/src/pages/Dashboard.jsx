@@ -7,9 +7,10 @@ function Dashboard() {
     // État local pour gérer l'affichage du formulaire d'édition
     const [isEditing, setIsEditing] = useState(false);
 
+    // Hook useSelector pour extraire l'état utilisateur de Redux
     const user = useSelector((state) => state.user);
 
-    // Données utilisateur
+    // État local des données utilisateur
     const [userData, setUserData] = useState({
         userName: user.userName,
         firstName: user.firstName,
@@ -18,7 +19,9 @@ function Dashboard() {
 
     console.log(user);
 
+    // Fonction appelée lorsque l'utilisateur clique sur le bouton "Edit"
     const handleEditClick = () => {
+        // Pré-remplir le formulaire d'édition avec les données actuelles de l'utilisateur
         setUserData({
             userName: user.userName,
             firstName: user.firstName,
@@ -27,13 +30,15 @@ function Dashboard() {
         setIsEditing(true);
     };
 
+    // Fonction appelée lorsque l'utilisateur clique sur le bouton "Save" dans le formulaire d'édition
     const handleSaveClick = () => {
-        // Mise à jour des données du formulaire
+        // Mise à jour des données utilisateur avec celles du formulaire
         const updatedUserData = {
             ...userData,
             userName: document.getElementById('username').value,
         };
 
+        // Dispatch de l'action 'UPDATE_USER' pour mettre à jour l'état de l'utilisateur dans Redux
         dispatch({
             type: 'UPDATE_USER',
             payload: updatedUserData,
