@@ -102,18 +102,18 @@ paths:
                 '500':
                     description: Internal Server Error
 
-    /user/accounts/{accountId}/month-transactions:
+    /user/transactions:
         get:
             security:
                 - Bearer: []
             tags:
                 - Transaction Module
-            summary: Retrieve month transactions
-            description: API for retrieving month transactions
+            summary: Retrieve month transactions by account
+            description: API for retrieving month transactions by account
             parameters:
-                - in: path
-                  name: accountId
-                  description: Account ID to retrieve
+                - in: query
+                  name: month
+                  description: Month to retrieve (MM/YY)
                   required: true
                   type: string
             produces:
@@ -122,13 +122,13 @@ paths:
                 '200':
                     description: Month transactions retrieve successully
                     schema:
-                        $ref: '#/definitions/Transactions'
+                        $ref: '#/definitions/Accounts'
                 '400':
                     description: Invalid Fields
                 '500':
                     description: Internal Server Error
 
-    /user/accounts/{accountId}/transactions/{transactionId}:
+    /user/transactions/{transactionId}:
         get:
             security:
                 - Bearer: []
@@ -142,11 +142,6 @@ paths:
                   description: Transaction ID to update
                   required: true
                   type: string
-                - in: path
-                  name: accountId
-                  description: Account ID to update
-                  required: true
-                  type: string
             produces:
                 - application/json
             responses:
@@ -158,7 +153,7 @@ paths:
                     description: Invalid Fields
                 '500':
                     description: Internal Server Error
-        put:
+        patch:
             security:
                 - Bearer: []
             tags:
@@ -169,11 +164,6 @@ paths:
                 - in: path
                   name: transactionId
                   description: Transaction ID to update
-                  required: true
-                  type: string
-                - in: path
-                  name: accountId
-                  description: Account ID to update
                   required: true
                   type: string
                 - in: body
@@ -271,7 +261,22 @@ definitions:
                 type: string
             note:
                 type: string
-    Transactions:
+    Account:
+        type: object
+        properties:
+            accountId:
+                type: string
+            name:
+                type: string
+            balance:
+                type: number
+            currency:
+                type: string
+            transactions:
+                type: array
+                items:
+                    $ref: '#/definitions/Transaction'
+    Accounts:
         type: array
         items:
-            $ref: '#/definitions/Transaction'
+            $ref: '#/definitions/Account'
